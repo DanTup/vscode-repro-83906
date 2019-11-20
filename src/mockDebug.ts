@@ -153,6 +153,20 @@ export class MockDebugSession extends LoggingDebugSession {
 		this._runtime.start(args.program, !!args.stopOnEntry);
 
 		this.sendResponse(response);
+
+		setTimeout(async () => {
+			this.sendEvent(new OutputEvent("\none"));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			this.sendEvent(new OutputEvent("\ntwo"));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			this.sendEvent(new OutputEvent("\nthree"));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			this.sendEvent(new OutputEvent("\nfour\n"));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			this.sendEvent(new OutputEvent("five"));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			this.sendEvent(new OutputEvent("\nsix"));
+		}, 2000);
 	}
 
 	protected setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments): void {
